@@ -1,0 +1,19 @@
+services:
+  vaultwarden:
+    image: vaultwarden/server:1.37.2
+    container_name: vaultwarden
+    restart: unless-stopped
+    init: true
+    environment:
+      DOMAIN: "${BTCPAY_PROTOCOL:-https}://${VAULTWARDEN_HOST}"
+      ADMIN_TOKEN: "${VAULTWARDEN_ADMIN_TOKEN}"
+      LETSENCRYPT_HOST: ${VAULTWARDEN_HOST}
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL:-<no value>}
+      VIRTUAL_HOST: ${VAULTWARDEN_HOST}
+      VIRTUAL_HOST_NAME: "vaultwarden"
+    volumes:
+      - vaultwarden_datadir:/data
+    expose:
+      - "80"
+volumes:
+  vaultwarden_datadir:
