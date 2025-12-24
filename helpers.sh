@@ -218,6 +218,7 @@ local env_variables=(
     LND_WTCLIENT_SWEEP_FEE
     LIT_PASSWD
     CLOUDFLARE_TUNNEL_TOKEN
+    VAULTWARDEN_HOST
 )
 
 for variable in "${env_variables[@]}"; do
