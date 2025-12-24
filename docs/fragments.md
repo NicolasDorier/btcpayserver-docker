@@ -89,6 +89,7 @@ formal generator prerequisite, so confirm LND is enabled.
 | [`opt-add-taler-merchant`](https://github.com/btcpayserver/btcpayserver-docker/blob/master/docker-compose-generator/docker-fragments/opt-add-taler-merchant.yml) | Add the GNU Taler merchant backend |
 | [`opt-add-teos`](https://github.com/btcpayserver/btcpayserver-docker/blob/master/docker-compose-generator/docker-fragments/opt-add-teos.yml) | Add a TEOS watchtower on port 9814; requires Bitcoin and ZMQ |
 | [`opt-add-thunderhub`](https://github.com/btcpayserver/btcpayserver-docker/blob/master/docker-compose-generator/docker-fragments/opt-add-thunderhub.yml) | Add ThunderHub; requires Bitcoin LND |
+| [`opt-add-vaultwarden`](https://github.com/btcpayserver/btcpayserver-docker/blob/master/docker-compose-generator/docker-fragments/opt-add-vaultwarden.yml) | Add Vaultwarden on a dedicated hostname with a generated admin key; see the [guide](./vaultwarden.md) |
 | [`opt-add-woocommerce`](https://github.com/btcpayserver/btcpayserver-docker/blob/master/docker-compose-generator/docker-fragments/opt-add-woocommerce.yml) | Add WordPress and WooCommerce on a dedicated hostname |
 | [`opt-add-zammad`](https://github.com/btcpayserver/btcpayserver-docker/blob/master/docker-compose-generator/docker-fragments/opt-add-zammad.yml) | Add the Zammad application stack; requires substantial additional resources |
 

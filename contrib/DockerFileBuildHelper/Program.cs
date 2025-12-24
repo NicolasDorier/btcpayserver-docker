@@ -41,8 +41,9 @@ namespace DockerFileBuildHelper
                 Image.Parse("btcpayserver/docker-compose-generator"),
             }.Concat(GetImages(fragmentDirectory)).DistinctBy(image => image.ToString()))
             {
-                // TODO: Ask beldex guys
-                if (image.Name == "beldex" || image.Name == "busybox")
+                // Vaultwarden's release image uses a multi-platform Buildx/Bake workflow that this helper cannot reproduce.
+                if (image.Name == "beldex" || image.Name == "busybox" ||
+                    (image.User == "vaultwarden" && image.Name == "server"))
                     continue;
                 Console.WriteLine($"Image: {image.ToString()}");
                 var info = GetDockerInfo(image);

@@ -88,6 +88,35 @@ if grep -q -- '--uipassword=' \
     exit 1
 fi
 
+(
+    cd "$generator_dir"
+    BTCPAYGEN_REVERSEPROXY="nginx" \
+    BTCPAYGEN_ADDITIONAL_FRAGMENTS="opt-add-vaultwarden" \
+    BTCPAYGEN_SUBNAME="vaultwarden-secret-test" \
+    dotnet run \
+        --no-build \
+        --project src/docker-compose-generator.csproj \
+        --configuration Release \
+        --no-launch-profile \
+        -p:TargetFrameworkOverride=net8.0
+)
+
+jq -e '.secrets | index("../secrets/vaultwarden_admin_token") != null' \
+    "$test_dir/Generated/manifest.json" >/dev/null
+"$repo_dir/generate-secrets.sh" "$test_dir/Generated/manifest.json"
+BTCPAY_HOST="example.com" \
+VAULTWARDEN_HOST="vaultwarden.example.com" \
+    docker compose \
+        -f "$test_dir/Generated/docker-compose.vaultwarden-secret-test.yml" \
+        config --quiet
+grep -q '/run/secrets/vaultwarden_admin_token' \
+    "$test_dir/Generated/docker-compose.vaultwarden-secret-test.yml"
+if grep -q 'VAULTWARDEN_ADMIN_TOKEN\|ADMIN_TOKEN:' \
+    "$test_dir/Generated/docker-compose.vaultwarden-secret-test.yml"; then
+    printf 'Vaultwarden admin token was rendered into the environment\n' >&2
+    exit 1
+fi
+
 set +e
 proxy_conflict_output="$({
     cd "$generator_dir" || exit 1

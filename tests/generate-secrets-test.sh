@@ -28,6 +28,10 @@ LIT_PASSWD="replacement-lit-password" \
     "$repo_dir/generate-secrets.sh" "$test_dir/Generated/manifest.json"
 [[ "$(< "$test_dir/secrets/lit_password")" == "existing-lit-password" ]]
 
+jq -n '{secrets:["../secrets/vaultwarden_admin_token"]}' > "$test_dir/Generated/manifest.json"
+"$repo_dir/generate-secrets.sh" "$test_dir/Generated/manifest.json"
+[[ "$(< "$test_dir/secrets/vaultwarden_admin_token")" =~ ^[a-zA-Z0-9]{64}$ ]]
+
 jq -n '{requiredRoutes:[],optionalRoutes:[],fragments:[]}' > "$test_dir/Generated/manifest.json"
 "$repo_dir/generate-secrets.sh" "$test_dir/Generated/manifest.json"
 

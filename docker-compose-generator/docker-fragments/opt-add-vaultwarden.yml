@@ -1,0 +1,27 @@
+services:
+  vaultwarden:
+    image: vaultwarden/server:1.37.3
+    container_name: vaultwarden
+    restart: unless-stopped
+    init: true
+    environment:
+      DOMAIN: "${BTCPAY_PROTOCOL:-https}://${VAULTWARDEN_HOST}"
+      LETSENCRYPT_HOST: ${VAULTWARDEN_HOST}
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL:-<no value>}
+      VIRTUAL_HOST: ${VAULTWARDEN_HOST}
+      VIRTUAL_HOST_NAME: "vaultwarden"
+    secrets:
+      - vaultwarden_admin_token
+    volumes:
+      - vaultwarden_datadir:/data
+    expose:
+      - "80"
+    command:
+      - "/bin/sh"
+      - "-c"
+      - 'export ADMIN_TOKEN="$$(cat /run/secrets/vaultwarden_admin_token)" && exec /start.sh'
+volumes:
+  vaultwarden_datadir:
+secrets:
+  vaultwarden_admin_token:
+    file: ../secrets/vaultwarden_admin_token
